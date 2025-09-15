@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* COMPREHENSIVE RESET - Must come AFTER Tailwind base to override it */
+html, body, #root {
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box;
+  height: 100%;
+  line-height: 1;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* More aggressive reset for potential spacing issues */
+html {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #FDFBF8; /* A very light, warm beige */
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0;
+  line-height: 1;
+  position: relative;
+}
+
+/* Ensure root div takes full space without any gaps */
+#root {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0;
+  position: relative;
+  min-height: 100vh;
+}
+
+/* Fix header spacing - remove container padding/margin */
+header .container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Ensure header sticks to very top - SCROLL ANIMATION COMPATIBLE */
+header {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  position: fixed !important;
+  z-index: 9999 !important;
+  /* Allow transform for scroll animations - don't override it */
+  transition: transform 0.3s ease-in-out !important;
+}
+
+/* Responsive header positioning - SCROLL ANIMATION COMPATIBLE */
+.header-force-top {
+  margin-top: -12px !important;
+  transition: transform 0.3s ease-in-out, top 0.3s ease-in-out !important;
+}
+
+/* Mobile only: Apply negative positioning specifically for mobile screens */
+@media (max-width: 639px) {
+  .header-force-top {
+    top: -20px !important;
+  }
+
+  /* When header is hidden on mobile, translate it up by its height + negative positioning */
+  .header-force-top.translate-y-full {
+    transform: translateY(calc(-100% - 20px)) !important;
+  }
+}
+
+/* Tablet: Medium negative positioning */
+@media (min-width: 640px) and (max-width: 767px) {
+  .header-force-top {
+    top: -30px !important;
+  }
+
+  /* When header is hidden on tablet */
+  .header-force-top.translate-y-full {
+    transform: translateY(calc(-100% - 30px)) !important;
+  }
+}
+
+/* Desktop: Your original negative positioning */
+@media (min-width: 768px) {
+  .header-force-top {
+    top: -48px !important;
+  }
+
+  /* When header is hidden on desktop */
+  .header-force-top.translate-y-full {
+    transform: translateY(calc(-100% - 48px)) !important;
+  }
+}
+
+/* Hero slider animations */
+.hero-slider-item {
+  transition: opacity 1s ease-in-out;
+}
+
+/* Animation for revealing elements on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Property card hover effects */
+.property-card-image {
+  transition: transform 0.4s ease-in-out;
+}
+
+.group:hover .property-card-image {
+  transform: scale(1.05);
+}
+
+/* Custom animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 1s ease-out;
+}
+
+.animate-fade-in-up-delay {
+  animation: fade-in-up 1s ease-out 0.3s both;
+}
