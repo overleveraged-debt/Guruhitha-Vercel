@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   base: '/gruhita/',
   build: {
-    outDir: 'dist',
+    outDir: 'docs',
     assetsDir: 'assets',
   }
 })
