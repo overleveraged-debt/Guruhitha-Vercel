@@ -16,22 +16,29 @@ export default {
       name: 'description',
       title: 'Property Description',
       type: 'text',
-      description: 'Detailed description of the property features and amenities',
-      validation: Rule => Rule.required().max(1000)
+      description: 'Detailed description of the property features and amenities (optional)',
+      validation: Rule => Rule.max(1000)
     },
     {
       name: 'price',
-      title: 'Price',
+      title: 'Price (Numeric)',
       type: 'number',
-      description: 'Property price in your local currency',
-      validation: Rule => Rule.required().min(0)
+      description: 'Property price in numeric format (optional - use either this or price display)',
+      validation: Rule => Rule.min(0)
+    },
+    {
+      name: 'priceDisplay',
+      title: 'Price Display Text',
+      type: 'string',
+      description: 'Custom price text (e.g., "12 Lakhs", "₹1.2 Cr", "Contact for Price") - overrides numeric price',
+      validation: Rule => Rule.max(100)
     },
     {
       name: 'location',
       title: 'Location/Address',
       type: 'string',
-      description: 'Full address or area name',
-      validation: Rule => Rule.required()
+      description: 'Full address or area name (optional)',
+      validation: Rule => Rule.max(200)
     },
     
     // Property Details
@@ -39,7 +46,7 @@ export default {
       name: 'bhk',
       title: 'BHK Configuration',
       type: 'string',
-      description: 'Property configuration (e.g., 1 BHK, 2 BHK, 3 BHK, etc.)',
+      description: 'Property configuration (e.g., 1 BHK, 2 BHK, 3 BHK, etc.) - optional',
       options: {
         list: [
           {title: '1 BHK', value: '1 BHK'},
@@ -51,8 +58,7 @@ export default {
           {title: 'Duplex', value: 'Duplex'},
           {title: 'Penthouse', value: 'Penthouse'}
         ]
-      },
-      validation: Rule => Rule.required()
+      }
     },
     {
       name: 'squareFootage',
@@ -65,7 +71,7 @@ export default {
       name: 'propertyType',
       title: 'Property Type',
       type: 'string',
-      description: 'Type of property',
+      description: 'Type of property (optional)',
       options: {
         list: [
           {title: 'Apartment', value: 'apartment'},
@@ -77,8 +83,7 @@ export default {
           {title: 'Condo', value: 'condo'},
           {title: 'Townhouse', value: 'townhouse'}
         ]
-      },
-      validation: Rule => Rule.required()
+      }
     },
     {
       name: 'buildingAge',
@@ -120,7 +125,7 @@ export default {
       name: 'category',
       title: 'Property Category',
       type: 'string',
-      description: 'Whether the property is for sale, rent, or commercial use',
+      description: 'Whether the property is for sale, rent, or commercial use (optional)',
       options: {
         list: [
           {title: 'For Sale', value: 'for-sale'},
@@ -128,7 +133,7 @@ export default {
           {title: 'Commercial', value: 'commercial'}
         ]
       },
-      validation: Rule => Rule.required()
+      initialValue: 'for-sale'
     },
     
     // Images
@@ -136,11 +141,10 @@ export default {
       name: 'featuredImage',
       title: 'Featured Image',
       type: 'image',
-      description: 'Main image that represents this property (appears in listings)',
+      description: 'Main image that represents this property (appears in listings) - optional',
       options: {
         hotspot: true,
-      },
-      validation: Rule => Rule.required()
+      }
     },
     {
       name: 'gallery',
@@ -173,8 +177,8 @@ export default {
       name: 'contactPhone',
       title: 'Contact Phone Number',
       type: 'string',
-      description: 'Phone number for inquiries about this property',
-      validation: Rule => Rule.required()
+      description: 'Phone number for inquiries about this property (optional - defaults to main number)',
+      initialValue: '+91 86184 15901'
     },
     
     // Status and Visibility

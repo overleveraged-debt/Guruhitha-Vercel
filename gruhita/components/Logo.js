@@ -13,7 +13,7 @@ const Logo = () => (
       marginRight: '8px',
       fontSize: '1.8rem'
     }}>🏠</span>
-    Gruhita CMS
+    Guruhitha CMS
   </div>
 )
 

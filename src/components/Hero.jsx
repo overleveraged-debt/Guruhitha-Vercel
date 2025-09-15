@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState, useEffect } from 'react'
 import { sanityHelpers, urlFor } from '../lib/sanity'
 
 const Hero = () => {
@@ -53,13 +52,7 @@ const Hero = () => {
     }
   }, [slides.length])
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length)
-  }
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length)
-  }
 
   // Show loading state while fetching data
   if (loading) {
@@ -98,7 +91,7 @@ const Hero = () => {
       <div className="container mx-auto pt-28 md:pt-28 lg:pt-36">
         {/* Carousel Container with relative positioning */}
         <div className="relative w-full bg-white rounded-xl shadow-xl border border-gray-100 md:bg-transparent md:rounded-xl md:shadow-lg md:border-0 overflow-hidden">
-          <div className="relative h-40 md:h-96 lg:h-[500px] bg-black">
+          <div className="relative h-64 md:h-[450px] lg:h-[550px] bg-black">
             {slides.map((slide, index) => (
               <div
                 key={index}
@@ -111,20 +104,24 @@ const Hero = () => {
                   alt={slide.title}
                   className="w-full h-full object-contain md:object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/10 flex items-center">
-                  <div className="px-4 md:px-8 w-full">
-                    <div className="max-w-xs md:max-w-2xl text-white">
-                      <h1 className="text-lg md:text-4xl font-bold mb-2 md:mb-4 leading-tight">
+                <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/10 flex items-center justify-center">
+                  <div className="px-4 md:px-8 w-full max-w-4xl text-center">
+                    <div className="text-white">
+                      <h1 className="text-xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 leading-tight">
                         {slide.title}
                       </h1>
-                      <p className="text-xs md:text-lg mb-3 md:mb-6 leading-snug opacity-90 hidden md:block">
+                      <p className="text-sm md:text-xl lg:text-2xl mb-4 md:mb-8 leading-snug opacity-90">
                         {slide.subtitle}
                       </p>
-                      <a href={slide.buttonLink} className="bg-brand-gold text-white px-4 py-2 md:px-6 md:py-3 rounded text-xs md:text-base font-semibold hover:bg-opacity-90 transition-all inline-block">
-                        {slide.buttonText}
-                      </a>
                     </div>
                   </div>
+                </div>
+
+                {/* Button positioned at bottom center above dots */}
+                <div className="absolute bottom-16 md:bottom-20 left-1/2 -translate-x-1/2 z-20">
+                  <a href={slide.buttonLink} className="bg-brand-gold text-white px-6 py-3 md:px-8 md:py-4 rounded-lg text-sm md:text-lg font-semibold hover:bg-opacity-90 transition-all inline-block shadow-lg">
+                    {slide.buttonText}
+                  </a>
                 </div>
               </div>
             ))}
@@ -132,21 +129,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Navigation arrows - positioned for compact hero */}
-      <div className="absolute bottom-2 md:bottom-4 right-4 md:right-8 z-20 flex space-x-2">
-        <button
-          onClick={prevSlide}
-          className="bg-white/90 hover:bg-white p-2 rounded-full transition-all duration-300 shadow-md"
-        >
-          <ChevronLeft size={16} className="md:w-5 md:h-5" stroke="#1A2E44" strokeWidth={2} />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="bg-white/90 hover:bg-white p-2 rounded-full transition-all duration-300 shadow-md"
-        >
-          <ChevronRight size={16} className="md:w-5 md:h-5" stroke="#1A2E44" strokeWidth={2} />
-        </button>
-      </div>
+
 
       {/* Indicators - positioned for compact hero */}
       <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 z-20 flex space-x-1">

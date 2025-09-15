@@ -9,6 +9,7 @@ import Testimonials from './components/Testimonials'
 import Partners from './components/Partners'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import FloatingActionButtons from './components/FloatingActionButtons'
 
 function App() {
   return (
@@ -17,14 +18,15 @@ function App() {
       <main>
         <Hero />
         <FeaturedProperties />
-        <About />
-        <WhyChooseUs />
         <Services />
-        <Testimonials />
+        <WhyChooseUs />
+        <About />
         <Partners />
+        <Testimonials />
         <Contact />
       </main>
       <Footer />
+      <FloatingActionButtons />
     </div>
   )
 }

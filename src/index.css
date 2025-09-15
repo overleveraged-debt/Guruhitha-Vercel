@@ -151,3 +151,21 @@ header {
 .animate-fade-in-up-delay {
   animation: fade-in-up 1s ease-out 0.3s both;
 }
+
+/* Carousel animations */
+.carousel-container {
+  scroll-behavior: smooth;
+}
+
+.carousel-item {
+  transition: transform 0.3s ease-in-out;
+}
+
+.carousel-item:hover {
+  transform: scale(1.02);
+}
+
+/* Smooth scrolling for carousels */
+.carousel-smooth {
+  transition: transform 0.5s ease-in-out;
+}

@@ -34,7 +34,7 @@ const About = () => {
               Your Trusted Partner in Bangalore's Real Estate Journey
             </h3>
             <p className="mb-4 text-lg">
-              Guruhita Properties and Fintech is a premier real estate and financial services consultancy based in the heart of Bangalore. With years of experience in the local market, we understand the nuances of property transactions and financing in India's fast-paced tech hub.
+              Guruhitha Properties and Fintech is a premier real estate and financial services consultancy based in the heart of Bangalore. With years of experience in the local market, we understand the nuances of property transactions and financing in India's fast-paced tech hub.
             </p>
             <p className="text-lg">
               Our mission is to provide a seamless, transparent, and trustworthy experience, whether you're buying your first home, selling a property, or seeking the best possible loan. We combine deep industry expertise with a client-first approach to make your dreams a reality.

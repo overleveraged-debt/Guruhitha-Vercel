@@ -10,17 +10,17 @@ const WhyChooseUs = () => {
     {
       icon: MapPin,
       title: "Bangalore Market Experts",
-      description: "Deep, localized knowledge of Bangalore's dynamic real estate market trends and property values."
+      description: ""
     },
     {
       icon: ShieldCheck,
       title: "Transparent & Trustworthy",
-      description: "We prioritize clear communication and ethical practices, ensuring a seamless and honest transaction process."
+      description: ""
     },
     {
       icon: FileText,
       title: "Hassle-Free Paperwork",
-      description: "Our dedicated team handles all the complex documentation for property and loans, saving you time and effort."
+      description: ""
     }
   ]
 
@@ -39,7 +39,7 @@ const WhyChooseUs = () => {
           <IconComponent size={40} stroke="#C89B3F" strokeWidth={2} />
         </div>
         <h4 className="text-xl font-bold text-brand-navy mb-2">{feature.title}</h4>
-        <p>{feature.description}</p>
+        {feature.description && <p>{feature.description}</p>}
       </div>
     )
   }
@@ -61,7 +61,7 @@ const WhyChooseUs = () => {
             subtitleVisible ? 'reveal visible' : 'reveal'
           }`}
         >
-          Your Advantage with Gruhita
+          Your Advantage with Guruhitha
         </h3>
         <div className="grid md:grid-cols-3 gap-10">
           {features.map((feature, index) => (

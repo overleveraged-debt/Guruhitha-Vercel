@@ -1,9 +1,9 @@
 {
-  "name": "gruhita-properties",
+  "name": "guruhitha-properties",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://overleveraged-debt.github.io/gruhita/",
+  "homepage": "https://overleveraged-debt.github.io/Guruhitha/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

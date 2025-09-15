@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { MapPin, Bed, Bath, Square, Phone, Home } from 'lucide-react'
+import React, { useState, useEffect, useRef } from 'react'
+import { MapPin, Bed, Bath, Square, Phone, Home, ChevronLeft, ChevronRight } from 'lucide-react'
 import useScrollReveal from '../hooks/useScrollReveal'
 import { sanityHelpers, urlFor } from '../lib/sanity'
 import PropertyModal from './PropertyModal'
@@ -12,6 +12,30 @@ const FeaturedProperties = () => {
   const [loading, setLoading] = useState(true)
   const [selectedProperty, setSelectedProperty] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  // Carousel state
+  const [currentSlide, setCurrentSlide] = useState(0)
+  const carouselRef = useRef(null)
+
+  // Number of properties to show per slide (responsive)
+  const [propertiesPerSlide, setPropertiesPerSlide] = useState(3)
+
+  // Handle responsive properties per slide
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setPropertiesPerSlide(1) // Mobile: 1 property
+      } else if (window.innerWidth < 1024) {
+        setPropertiesPerSlide(2) // Tablet: 2 properties
+      } else {
+        setPropertiesPerSlide(3) // Desktop: 3 properties
+      }
+    }
+
+    handleResize() // Set initial value
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   // Fetch featured properties from Sanity
   useEffect(() => {
@@ -31,6 +55,22 @@ const FeaturedProperties = () => {
 
     fetchProperties()
   }, [])
+
+  // Calculate total slides
+  const totalSlides = Math.max(0, properties.length - propertiesPerSlide + 1)
+
+  // Carousel navigation functions
+  const nextSlide = () => {
+    if (currentSlide < totalSlides - 1) {
+      setCurrentSlide(prev => prev + 1)
+    }
+  }
+
+  const prevSlide = () => {
+    if (currentSlide > 0) {
+      setCurrentSlide(prev => prev - 1)
+    }
+  }
 
   const openModal = (property) => {
     setSelectedProperty(property)
@@ -60,7 +100,7 @@ const FeaturedProperties = () => {
     return (
       <div
         ref={cardRef}
-        className={`bg-white rounded-lg shadow-lg overflow-hidden group transition-all duration-800 ${
+        className={`bg-white rounded-lg shadow-lg overflow-hidden group transition-all duration-800 h-full ${
           cardVisible ? 'reveal visible' : 'reveal'
         }`}
       >
@@ -68,7 +108,7 @@ const FeaturedProperties = () => {
           <img
             src={urlFor(property.featuredImage).width(400).height(300).url()}
             alt={property.title}
-            className="w-full h-56 object-cover property-card-image"
+            className="w-full h-48 object-cover property-card-image"
           />
           <div className="absolute top-4 left-4 bg-brand-gold text-white text-xs font-bold px-3 py-1 rounded-full">
             {formatCategory(property.category)}
@@ -105,7 +145,7 @@ const FeaturedProperties = () => {
               </span>
             )}
           </div>
-          <p className="text-2xl font-extrabold text-brand-navy mb-4">{formatPriceCompact(property.price)}</p>
+          <p className="text-2xl font-extrabold text-brand-navy mb-4">{formatPriceCompact(property.price, property.priceDisplay)}</p>
           <div className="flex gap-2">
             <a
               href={`tel:${property.contactPhone}`}
@@ -127,7 +167,7 @@ const FeaturedProperties = () => {
   }
 
   return (
-    <section id="properties" className="py-20 bg-white">
+    <section id="properties" className="py-12 md:py-20 bg-white">
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
           <h2
@@ -167,12 +207,77 @@ const FeaturedProperties = () => {
           </div>
         )}
 
-        {/* Properties Grid */}
+        {/* Properties Carousel */}
         {!loading && properties.length > 0 && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {properties.map((property, index) => (
-              <PropertyCard key={property._id} property={property} index={index} />
-            ))}
+          <div className="relative max-w-7xl mx-auto">
+            {/* Carousel Container */}
+            <div className="overflow-hidden">
+              <div
+                ref={carouselRef}
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{
+                  transform: `translateX(-${currentSlide * (100 / propertiesPerSlide)}%)`
+                }}
+              >
+                {properties.map((property, index) => (
+                  <div
+                    key={property._id}
+                    className="flex-shrink-0 px-4"
+                    style={{ width: `${100 / propertiesPerSlide}%` }}
+                  >
+                    <PropertyCard property={property} index={index} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Navigation Arrows */}
+            {properties.length > propertiesPerSlide && (
+              <>
+                <button
+                  onClick={prevSlide}
+                  disabled={currentSlide === 0}
+                  className={`absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white shadow-lg rounded-full p-3 transition-all duration-300 z-10 ${
+                    currentSlide === 0
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'hover:bg-brand-gold hover:text-white'
+                  }`}
+                  aria-label="Previous properties"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button
+                  onClick={nextSlide}
+                  disabled={currentSlide >= totalSlides - 1}
+                  className={`absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white shadow-lg rounded-full p-3 transition-all duration-300 z-10 ${
+                    currentSlide >= totalSlides - 1
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'hover:bg-brand-gold hover:text-white'
+                  }`}
+                  aria-label="Next properties"
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </>
+            )}
+
+            {/* Slide Indicators */}
+            {properties.length > propertiesPerSlide && totalSlides > 1 && (
+              <div className="flex justify-center mt-6 space-x-2">
+                {Array.from({ length: totalSlides }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                      index === currentSlide
+                        ? 'bg-brand-gold scale-125'
+                        : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

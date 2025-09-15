@@ -1,6 +1,6 @@
-# Gruhita Properties and Finance - React Website
+# Guruhitha Properties and Finance - React Website
 
-A modern, responsive React application for Gruhita Properties and Finance, converted from a single-page HTML website to a structured React application using Vite, Tailwind CSS, and Lucide React icons.
+A modern, responsive React application for Guruhitha Properties and Finance, converted from a single-page HTML website to a structured React application using Vite, Tailwind CSS, and Lucide React icons.
 
 ## 🚀 Quick Start
 
@@ -149,7 +149,7 @@ The built application can be deployed to any static hosting service:
 Update the contact details in `src/components/Contact.jsx`:
 - Address: 123, MG Road, Bangalore, India
 - Phone: +91 98765 43210
-- Email: contact@gruhitaproperties.com
+- Email: guruhithaproperties@gmail.com
 
 ## 🔧 **Customization**
 
@@ -167,4 +167,4 @@ Create new components in `src/components/` and import them in `App.jsx`
 
 ---
 
-**Built with ❤️ for Gruhita Properties and Finance**
+**Built with ❤️ for Guruhitha Properties and Finance**

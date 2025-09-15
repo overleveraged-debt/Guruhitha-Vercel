@@ -10,7 +10,7 @@ const Services = () => {
     {
       icon: Building2,
       title: "Real Estate Services",
-      description: "Navigate the Bangalore property market with our expert guidance. We assist with every step of the process.",
+      description: "",
       iconBg: "bg-brand-gold/10",
       iconColor: "#C89B3F",
       listColor: "text-brand-gold",
@@ -27,7 +27,7 @@ const Services = () => {
     {
       icon: Landmark,
       title: "Financial Services",
-      description: "We simplify the loan process, ensuring you get the best terms for all your financial needs.",
+      description: "",
       iconBg: "bg-brand-navy/10",
       iconColor: "#1A2E44",
       listColor: "text-brand-navy",
@@ -61,8 +61,8 @@ const Services = () => {
           </div>
           <h4 className="text-2xl font-bold text-brand-navy">{service.title}</h4>
         </div>
-        <p className="mb-4">{service.description}</p>
-        <ul className={`space-y-2 list-inside list-disc ${service.listColor}`}>
+        {service.description && <p className="mb-4">{service.description}</p>}
+        <ul className={`space-y-4 list-outside list-disc ml-6 text-left ${service.listColor}`}>
           {service.items.map((item, itemIndex) => (
             <li key={itemIndex}>
               <span className="text-brand-text">{item}</span>

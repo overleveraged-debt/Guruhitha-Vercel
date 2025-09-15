@@ -44,7 +44,7 @@ const Header = () => {
           <div className="flex items-center flex-shrink-0">
             <img
               src={`${baseUrl}Guruhita LOGO.png`}
-              alt="Guruhita Properties"
+              alt="Guruhitha Properties"
               className="h-44 md:h-36 lg:h-60 w-auto object-contain filter drop-shadow-xl"
             />
           </div>

@@ -47,7 +47,17 @@ export const formatPriceBoth = (price) => {
   }
 }
 
-export const formatPriceCompact = (price) => {
+export const formatPriceCompact = (price, priceDisplay) => {
+  // If custom price display text is provided, use that
+  if (priceDisplay && priceDisplay.trim()) {
+    return priceDisplay
+  }
+
+  // If no price is provided, return default text
+  if (!price || price === 0) {
+    return 'Contact for Price'
+  }
+
   // Compact format for cards and listings
   if (price >= 10000000) {
     return `₹${(price / 10000000).toFixed(1)} Cr`

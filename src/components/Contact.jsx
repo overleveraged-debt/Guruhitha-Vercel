@@ -47,15 +47,15 @@ const Contact = () => {
             <div className="space-y-4">
               <p className="flex items-center">
                 <MapPin size={20} stroke="#C89B3F" strokeWidth={2} className="mr-3" />
-                123, MG Road, Bangalore, India
+                1st floor, No 58, Main Rd, opposite to families super market, Doddabidarakallu, Gangondanahalli, Bengaluru, Karnataka 560073
               </p>
               <p className="flex items-center">
                 <Phone size={20} stroke="#C89B3F" strokeWidth={2} className="mr-3" />
-                +91 98765 43210
+                +91 86184 15901
               </p>
               <p className="flex items-center">
                 <Mail size={20} stroke="#C89B3F" strokeWidth={2} className="mr-3" />
-                contact@gruhitaproperties.com
+                guruhithaproperties@gmail.com
               </p>
             </div>
           </div>

@@ -36,6 +36,7 @@ export const queries = {
     title,
     description,
     price,
+    priceDisplay,
     location,
     bhk,
     squareFootage,
@@ -57,6 +58,7 @@ export const queries = {
     title,
     description,
     price,
+    priceDisplay,
     location,
     bhk,
     squareFootage,
@@ -157,7 +159,7 @@ export const sanityHelpers = {
       return [
         {
           _id: 'fallback-1',
-          title: 'Welcome to Gruhita Properties',
+          title: 'Welcome to Guruhitha Properties',
           subtitle: 'Your trusted partner in Bangalore real estate',
           buttonText: 'Explore Properties',
           buttonLink: '#properties',
