@@ -39,24 +39,41 @@ const Contact = () => {
               Get In Touch
             </h2>
             <h3 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Start? Contact Us Today.
+              Ready to Start?
             </h3>
             <p className="mb-8 text-gray-300">
-              Fill out the form or contact us directly. Our team is ready to assist you with all your property and finance needs in Bangalore.
+              Fill out the form or contact us directly. Our team is ready to assist you.
             </p>
             <div className="space-y-4">
-              <p className="flex items-center">
-                <MapPin size={20} stroke="#C89B3F" strokeWidth={2} className="mr-3" />
-                1st floor, No 58, Main Rd, opposite to families super market, Doddabidarakallu, Gangondanahalli, Bengaluru, Karnataka 560073
-              </p>
-              <p className="flex items-center">
+              <div className="flex items-start">
+                <MapPin size={20} stroke="#C89B3F" strokeWidth={2} className="mr-3 mt-1 flex-shrink-0" />
+                <a
+                  href="https://maps.app.goo.gl/uE6E5uuHJSo5diSV8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-white transition-colors duration-200 leading-relaxed"
+                >
+                  1st floor, No 58, Main Rd, opposite to families super market, Doddabidrakallu, Gangondanahalli, Bengaluru, Karnataka 560073
+                </a>
+              </div>
+              <div className="flex items-center">
                 <Phone size={20} stroke="#C89B3F" strokeWidth={2} className="mr-3" />
-                +91 86184 15901
-              </p>
-              <p className="flex items-center">
+                <a
+                  href="tel:+918618415901"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
+                >
+                  +91 86184 15901
+                </a>
+              </div>
+              <div className="flex items-center">
                 <Mail size={20} stroke="#C89B3F" strokeWidth={2} className="mr-3" />
-                guruhithaproperties@gmail.com
-              </p>
+                <a
+                  href="mailto:guruhithaproperties@gmail.com"
+                  className="text-gray-300 hover:text-white transition-colors duration-200"
+                >
+                  guruhithaproperties@gmail.com
+                </a>
+              </div>
             </div>
           </div>
           <div className="bg-white p-8 rounded-lg text-brand-text">
