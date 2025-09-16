@@ -20,13 +20,22 @@ export default {
     },
     {
       name: 'image',
-      title: 'Background Image',
+      title: 'Desktop Background Image',
       type: 'image',
-      description: 'High-quality background image for the banner (recommended: 1920x1080px)',
+      description: 'High-quality background image for desktop/tablet (recommended: 1200x600px)',
       options: {
         hotspot: true, // Enables image cropping
       },
       validation: Rule => Rule.required()
+    },
+    {
+      name: 'mobileImage',
+      title: 'Mobile Background Image (Optional)',
+      type: 'image',
+      description: 'Optimized image for mobile devices (recommended: 800x1200px). If not provided, desktop image will be used.',
+      options: {
+        hotspot: true, // Enables image cropping
+      }
     },
     {
       name: 'buttonText',
@@ -41,6 +50,38 @@ export default {
       type: 'string',
       description: 'URL or page section the button should link to (e.g., #properties, /contact)',
       initialValue: '#properties'
+    },
+    {
+      name: 'desktopTextPosition',
+      title: 'Desktop Text Position',
+      type: 'string',
+      description: 'Choose where the text should appear on desktop/tablet',
+      options: {
+        list: [
+          {title: 'Top', value: 'top'},
+          {title: 'Center', value: 'center'},
+          {title: 'Bottom', value: 'bottom'},
+          {title: 'Hide Text', value: 'none'}
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'center'
+    },
+    {
+      name: 'mobileTextPosition',
+      title: 'Mobile Text Position',
+      type: 'string',
+      description: 'Choose where the text should appear on mobile devices',
+      options: {
+        list: [
+          {title: 'Top', value: 'top'},
+          {title: 'Center', value: 'center'},
+          {title: 'Bottom', value: 'bottom'},
+          {title: 'Hide Text', value: 'none'}
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'center'
     },
     {
       name: 'isActive',

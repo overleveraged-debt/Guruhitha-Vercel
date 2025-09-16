@@ -25,8 +25,11 @@ export const queries = {
     title,
     subtitle,
     image,
+    mobileImage,
     buttonText,
     buttonLink,
+    desktopTextPosition,
+    mobileTextPosition,
     order
   }`,
 

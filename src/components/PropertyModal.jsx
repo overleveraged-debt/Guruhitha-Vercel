@@ -1,15 +1,19 @@
 import React, { useState } from 'react'
-import { X, Phone, MapPin, Home, Calendar, Compass, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, Phone, MapPin, Home, Calendar, Compass, ChevronLeft, ChevronRight, Square, Building, Clock } from 'lucide-react'
 import { urlFor } from '../lib/sanity'
-import { formatPriceBoth } from '../utils/priceFormatter'
+import { formatPriceDetailed } from '../utils/priceFormatter'
 
 const PropertyModal = ({ property, isOpen, onClose }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
+  // Touch/Swipe state for image navigation
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
+
   if (!isOpen || !property) return null
 
   // Format price for display
-  const priceFormatted = formatPriceBoth(property.price)
+  const priceFormatted = formatPriceDetailed(property.price)
 
   // Format category for display
   const formatCategory = (category) => {
@@ -48,6 +52,29 @@ const PropertyModal = ({ property, isOpen, onClose }) => {
 
   const availabilityStatus = formatAvailabilityStatus(property.availabilityStatus)
 
+  // Touch/Swipe handlers for image navigation
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null)
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX)
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe && allImages.length > 1) {
+      nextImage()
+    } else if (isRightSwipe && allImages.length > 1) {
+      prevImage()
+    }
+  }
+
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50 p-4">
       <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
@@ -67,7 +94,12 @@ const PropertyModal = ({ property, isOpen, onClose }) => {
           {/* Image Gallery */}
           {allImages.length > 0 && (
             <div className="mb-6">
-              <div className="relative">
+              <div
+                className="relative"
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+              >
                 <img
                   src={urlFor(allImages[currentImageIndex]).width(800).height(500).url()}
                   alt={property.title}
@@ -129,8 +161,7 @@ const PropertyModal = ({ property, isOpen, onClose }) => {
               <div className="mb-4">
                 <div className="flex items-center justify-between mb-2">
                   <div>
-                    <span className="text-3xl font-bold text-brand-gold block">{priceFormatted.text}</span>
-                    <span className="text-lg text-gray-600">{priceFormatted.numeric}</span>
+                    <span className="text-3xl font-bold text-brand-gold block">{priceFormatted.display}</span>
                   </div>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${availabilityStatus.color}`}>
                     {availabilityStatus.text}
@@ -150,35 +181,50 @@ const PropertyModal = ({ property, isOpen, onClose }) => {
               {/* Property Features */}
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-brand-navy mb-3">Property Features</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {property.bhk && (
-                    <div className="flex items-center gap-2">
-                      <Home size={18} className="text-brand-gold" />
-                      <span className="text-gray-700">{property.bhk}</span>
+                <div className="grid grid-cols-1 gap-3">
+                  {property.bhk && ['1 BHK', '2 BHK', '3 BHK', '4 BHK', '5 BHK'].includes(property.bhk) && (
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <Home size={20} className="text-brand-gold flex-shrink-0" />
+                      <div>
+                        <span className="text-sm text-gray-500 block"></span>
+                        <span className="text-gray-800 font-medium">{property.bhk}</span>
+                      </div>
                     </div>
                   )}
                   {property.squareFootage && (
-                    <div className="flex items-center gap-2">
-                      <Home size={18} className="text-brand-gold" />
-                      <span className="text-gray-700">{property.squareFootage} sq ft</span>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <Square size={20} className="text-brand-gold flex-shrink-0" />
+                      <div>
+                        <span className="text-sm text-gray-500 block">Area</span>
+                        <span className="text-gray-800 font-medium">{property.squareFootage} sq ft</span>
+                      </div>
                     </div>
                   )}
                   {property.propertyType && (
-                    <div className="flex items-center gap-2">
-                      <Home size={18} className="text-brand-gold" />
-                      <span className="text-gray-700 capitalize">{property.propertyType.replace('-', ' ')}</span>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <Building size={20} className="text-brand-gold flex-shrink-0" />
+                      <div>
+                        <span className="text-sm text-gray-500 block">Property Type</span>
+                        <span className="text-gray-800 font-medium capitalize">{property.propertyType.replace('-', ' ')}</span>
+                      </div>
                     </div>
                   )}
                   {property.buildingAge && (
-                    <div className="flex items-center gap-2">
-                      <Calendar size={18} className="text-brand-gold" />
-                      <span className="text-gray-700 capitalize">{property.buildingAge.replace('-', ' ')}</span>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <Clock size={20} className="text-brand-gold flex-shrink-0" />
+                      <div>
+                        <span className="text-sm text-gray-500 block">Building Age</span>
+                        <span className="text-gray-800 font-medium">{property.buildingAge}</span>
+                      </div>
                     </div>
                   )}
                   {property.facing && (
-                    <div className="flex items-center gap-2">
-                      <Compass size={18} className="text-brand-gold" />
-                      <span className="text-gray-700 capitalize">{property.facing.replace('-', ' ')} Facing</span>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <Compass size={20} className="text-brand-gold flex-shrink-0" />
+                      <div>
+                        <span className="text-sm text-gray-500 block">Facing Direction</span>
+                        <span className="text-gray-800 font-medium capitalize">{property.facing.replace('-', ' ')} Facing</span>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -218,11 +264,7 @@ const PropertyModal = ({ property, isOpen, onClose }) => {
                 </div>
               </div>
 
-              {/* Additional Info */}
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-medium text-brand-navy mb-2">Property ID</h4>
-                <p className="text-sm text-gray-600 font-mono">{property._id}</p>
-              </div>
+
             </div>
           </div>
         </div>

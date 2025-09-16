@@ -5,7 +5,20 @@ const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [slides, setSlides] = useState([])
   const [loading, setLoading] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
   const slideInterval = 5000 // 5 seconds
+
+  // Detect mobile screen size
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Fetch hero banners from Sanity
   useEffect(() => {
@@ -17,10 +30,13 @@ const Hero = () => {
         // Transform Sanity data to match component structure
         const transformedSlides = banners.map(banner => ({
           image: banner.image ? urlFor(banner.image).width(1200).quality(90).url() : null,
+          mobileImage: banner.mobileImage ? urlFor(banner.mobileImage).width(800).quality(90).url() : null,
           title: banner.title,
           subtitle: banner.subtitle,
           buttonText: banner.buttonText || 'Explore Properties',
-          buttonLink: banner.buttonLink || '#properties'
+          buttonLink: banner.buttonLink || '#properties',
+          desktopTextPosition: banner.desktopTextPosition || 'center',
+          mobileTextPosition: banner.mobileTextPosition || 'center'
         }))
 
         setSlides(transformedSlides)
@@ -32,7 +48,9 @@ const Hero = () => {
           title: "Find Your Dream Home in Bangalore",
           subtitle: "Exclusive properties and tailored home loan solutions under one roof.",
           buttonText: "Explore Properties",
-          buttonLink: "#properties"
+          buttonLink: "#properties",
+          desktopTextPosition: "center",
+          mobileTextPosition: "center"
         }])
       } finally {
         setLoading(false)
@@ -52,7 +70,29 @@ const Hero = () => {
     }
   }, [slides.length])
 
+  // Get positioning classes based on text position and device
+  const getPositionClasses = (slide) => {
+    const position = isMobile ? slide.mobileTextPosition : slide.desktopTextPosition
 
+    switch (position) {
+      case 'top':
+        return 'items-start pt-8 md:pt-16'
+      case 'bottom':
+        return 'items-end pb-8 md:pb-16'
+      case 'center':
+        return 'items-center'
+      case 'none':
+        return 'items-center' // Hidden but positioned for layout
+      default:
+        return 'items-center'
+    }
+  }
+
+  // Check if text should be shown based on device
+  const shouldShowText = (slide) => {
+    const position = isMobile ? slide.mobileTextPosition : slide.desktopTextPosition
+    return position !== 'none'
+  }
 
   // Show loading state while fetching data
   if (loading) {
@@ -91,7 +131,7 @@ const Hero = () => {
       <div className="container mx-auto pt-28 md:pt-28 lg:pt-36">
         {/* Carousel Container with relative positioning */}
         <div className="relative w-full bg-white rounded-xl shadow-xl border border-gray-100 md:bg-transparent md:rounded-xl md:shadow-lg md:border-0 overflow-hidden">
-          <div className="relative h-64 md:h-[450px] lg:h-[550px] bg-black">
+          <div className="relative h-[80vh] md:h-[450px] lg:h-[550px] bg-black">
             {slides.map((slide, index) => (
               <div
                 key={index}
@@ -100,24 +140,27 @@ const Hero = () => {
                 }`}
               >
                 <img
-                  src={slide.image}
+                  src={isMobile && slide.mobileImage ? slide.mobileImage : slide.image}
                   alt={slide.title}
-                  className="w-full h-full object-contain md:object-cover"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/10 flex items-center justify-center">
-                  <div className="px-4 md:px-8 w-full max-w-4xl text-center">
-                    <div className="text-white">
-                      <h1 className="text-xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 leading-tight">
-                        {slide.title}
-                      </h1>
-                      <p className="text-sm md:text-xl lg:text-2xl mb-4 md:mb-8 leading-snug opacity-90">
-                        {slide.subtitle}
-                      </p>
+                {/* Text overlay - only show if not 'none' */}
+                {shouldShowText(slide) && (
+                  <div className={`absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-black/10 flex justify-center ${getPositionClasses(slide)}`}>
+                    <div className="px-4 md:px-8 w-full max-w-4xl text-center">
+                      <div className="text-white">
+                        <h1 className="text-xl md:text-5xl lg:text-6xl font-bold mb-3 md:mb-6 leading-tight">
+                          {slide.title}
+                        </h1>
+                        <p className="text-sm md:text-xl lg:text-2xl mb-4 md:mb-8 leading-snug opacity-90">
+                          {slide.subtitle}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
 
-                {/* Button positioned at bottom center above dots */}
+                {/* Button always positioned at bottom center above dots */}
                 <div className="absolute bottom-16 md:bottom-20 left-1/2 -translate-x-1/2 z-20">
                   <a href={slide.buttonLink} className="bg-brand-gold text-white px-6 py-3 md:px-8 md:py-4 rounded-lg text-sm md:text-lg font-semibold hover:bg-opacity-90 transition-all inline-block shadow-lg">
                     {slide.buttonText}

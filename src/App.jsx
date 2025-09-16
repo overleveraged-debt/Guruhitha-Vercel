@@ -5,6 +5,7 @@ import FeaturedProperties from './components/FeaturedProperties'
 import About from './components/About'
 import WhyChooseUs from './components/WhyChooseUs'
 import Services from './components/Services'
+import FinancialServices from './components/FinancialServices'
 import Testimonials from './components/Testimonials'
 import Partners from './components/Partners'
 import Contact from './components/Contact'
@@ -19,6 +20,7 @@ function App() {
         <Hero />
         <FeaturedProperties />
         <Services />
+        <FinancialServices />
         <WhyChooseUs />
         <About />
         <Partners />

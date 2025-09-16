@@ -3,7 +3,7 @@ import { MapPin, Bed, Bath, Square, Phone, Home, ChevronLeft, ChevronRight } fro
 import useScrollReveal from '../hooks/useScrollReveal'
 import { sanityHelpers, urlFor } from '../lib/sanity'
 import PropertyModal from './PropertyModal'
-import { formatPriceCompact } from '../utils/priceFormatter'
+import { formatPrice } from '../utils/priceFormatter'
 
 const FeaturedProperties = () => {
   const [titleRef, titleVisible] = useScrollReveal()
@@ -16,6 +16,10 @@ const FeaturedProperties = () => {
   // Carousel state
   const [currentSlide, setCurrentSlide] = useState(0)
   const carouselRef = useRef(null)
+
+  // Touch/Swipe state
+  const [touchStart, setTouchStart] = useState(null)
+  const [touchEnd, setTouchEnd] = useState(null)
 
   // Number of properties to show per slide (responsive)
   const [propertiesPerSlide, setPropertiesPerSlide] = useState(3)
@@ -82,6 +86,29 @@ const FeaturedProperties = () => {
     setIsModalOpen(false)
   }
 
+  // Touch/Swipe handlers
+  const minSwipeDistance = 50
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null) // otherwise the swipe is fired even with usual touch events
+    setTouchStart(e.targetTouches[0].clientX)
+  }
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX)
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return
+    const distance = touchStart - touchEnd
+    const isLeftSwipe = distance > minSwipeDistance
+    const isRightSwipe = distance < -minSwipeDistance
+
+    if (isLeftSwipe) {
+      nextSlide()
+    } else if (isRightSwipe) {
+      prevSlide()
+    }
+  }
+
   const PropertyCard = ({ property, index }) => {
     const [cardRef, cardVisible] = useScrollReveal()
 
@@ -145,7 +172,7 @@ const FeaturedProperties = () => {
               </span>
             )}
           </div>
-          <p className="text-2xl font-extrabold text-brand-navy mb-4">{formatPriceCompact(property.price, property.priceDisplay)}</p>
+          <p className="text-2xl font-extrabold text-brand-navy mb-4">{formatPrice(property.price)}</p>
           <div className="flex gap-2">
             <a
               href={`tel:${property.contactPhone}`}
@@ -211,7 +238,12 @@ const FeaturedProperties = () => {
         {!loading && properties.length > 0 && (
           <div className="relative max-w-7xl mx-auto">
             {/* Carousel Container */}
-            <div className="overflow-hidden">
+            <div
+              className="overflow-hidden"
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+            >
               <div
                 ref={carouselRef}
                 className="flex transition-transform duration-500 ease-in-out"

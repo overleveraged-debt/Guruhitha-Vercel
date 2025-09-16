@@ -21,17 +21,11 @@ export default {
     },
     {
       name: 'price',
-      title: 'Price (Numeric)',
-      type: 'number',
-      description: 'Property price in numeric format (optional - use either this or price display)',
-      validation: Rule => Rule.min(0)
-    },
-    {
-      name: 'priceDisplay',
-      title: 'Price Display Text',
+      title: 'Property Price',
       type: 'string',
-      description: 'Custom price text (e.g., "12 Lakhs", "₹1.2 Cr", "Contact for Price") - overrides numeric price',
-      validation: Rule => Rule.max(100)
+      description: 'Property price in any format (e.g., "30 Crore", "₹1.2 Cr", "50 Lakhs", "Contact for Price", "3000000")',
+      validation: Rule => Rule.required().max(100),
+      placeholder: 'e.g., 30 Crore, ₹50 Lakhs, Contact for Price'
     },
     {
       name: 'location',
@@ -89,17 +83,9 @@ export default {
       name: 'buildingAge',
       title: 'Building Age',
       type: 'string',
-      description: 'Age of the building/property',
-      options: {
-        list: [
-          {title: 'Under Construction', value: 'under-construction'},
-          {title: 'Ready to Move', value: 'ready-to-move'},
-          {title: '1-2 Years', value: '1-2-years'},
-          {title: '3-5 Years', value: '3-5-years'},
-          {title: '5-10 Years', value: '5-10-years'},
-          {title: '10+ Years', value: '10-plus-years'}
-        ]
-      }
+      description: 'Age of the building/property (e.g., "3-5 Years", "Under Construction", "Ready to Move")',
+      placeholder: 'e.g., 3-5 Years, Under Construction, Ready to Move',
+      validation: Rule => Rule.max(50)
     },
     {
       name: 'facing',
@@ -231,7 +217,7 @@ export default {
       const availabilityIcon = availabilityStatus === 'sold' ? ' 🔴' : availabilityStatus === 'available' ? ' 🟢' : ' 🟡'
       return {
         title: `${title}${statusIcon}${availabilityIcon}`,
-        subtitle: `₹${price?.toLocaleString()} • ${bhk || 'N/A'} • ${location} • ${category}`,
+        subtitle: `${price || 'Price not set'} • ${bhk || 'N/A'} • ${location} • ${category}`,
         media: media
       }
     }

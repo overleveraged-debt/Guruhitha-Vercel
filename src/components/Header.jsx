@@ -58,6 +58,12 @@ const Header = () => {
               Properties
             </a>
             <a
+              href="#financial-services"
+              className="text-white hover:text-yellow-300 transition-all duration-300 px-6 py-2 font-medium text-sm rounded-full hover:bg-red-700"
+            >
+              Home Loans
+            </a>
+            <a
               href="#about"
               className="text-white hover:text-yellow-300 transition-all duration-300 px-6 py-2 font-medium text-sm rounded-full hover:bg-red-700"
             >
@@ -98,6 +104,7 @@ const Header = () => {
         <div className="md:hidden bg-white/95 backdrop-blur-md shadow-xl">
           <div className="px-6 py-6 space-y-4">
             <a href="#properties" className="block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100">Properties</a>
+            <a href="#financial-services" className="block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100">Home Loans</a>
             <a href="#about" className="block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100">About Us</a>
             <a href="#services" className="block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100">Services</a>
             <a

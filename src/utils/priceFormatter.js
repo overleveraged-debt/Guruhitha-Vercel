@@ -67,3 +67,99 @@ export const formatPriceCompact = (price, priceDisplay) => {
     return `₹${price.toLocaleString('en-IN')}`
   }
 }
+
+// New unified price formatter for single price field
+export const formatPrice = (price) => {
+  // If no price provided, return default
+  if (!price) {
+    return 'Contact for Price'
+  }
+
+  // Handle numeric values (old data)
+  if (typeof price === 'number') {
+    if (price === 0) {
+      return 'Contact for Price'
+    }
+    // Format numeric price using existing logic
+    return formatPriceText(price)
+  }
+
+  // Handle string values (new data)
+  if (typeof price === 'string') {
+    if (price.trim() === '') {
+      return 'Contact for Price'
+    }
+    return price.trim()
+  }
+
+  // Fallback
+  return 'Contact for Price'
+}
+
+// Enhanced price formatter that provides both display and numeric info
+export const formatPriceDetailed = (price) => {
+  if (!price) {
+    return {
+      text: 'Contact for Price',
+      numeric: 'Contact for Price',
+      display: 'Contact for Price'
+    }
+  }
+
+  // Handle numeric values (old data)
+  if (typeof price === 'number') {
+    if (price === 0) {
+      return {
+        text: 'Contact for Price',
+        numeric: 'Contact for Price',
+        display: 'Contact for Price'
+      }
+    }
+    // Format numeric price using existing logic
+    const formatted = formatPriceBoth(price)
+    return {
+      text: formatted.text,
+      numeric: formatted.numeric,
+      display: formatted.display
+    }
+  }
+
+  // Handle string values (new data)
+  if (typeof price === 'string') {
+    if (price.trim() === '') {
+      return {
+        text: 'Contact for Price',
+        numeric: 'Contact for Price',
+        display: 'Contact for Price'
+      }
+    }
+
+    const cleanPrice = price.trim()
+
+    // Check if it's a pure number string
+    const numericValue = parseFloat(cleanPrice.replace(/[₹,\s]/g, ''))
+    if (!isNaN(numericValue) && /^\d+(\.\d+)?$/.test(cleanPrice.replace(/[₹,\s]/g, ''))) {
+      // It's a numeric value, format it nicely
+      const formatted = formatPriceBoth(numericValue)
+      return {
+        text: formatted.text,
+        numeric: formatted.numeric,
+        display: formatted.display
+      }
+    }
+
+    // It's text format, return as-is
+    return {
+      text: cleanPrice,
+      numeric: cleanPrice,
+      display: cleanPrice
+    }
+  }
+
+  // Fallback
+  return {
+    text: 'Contact for Price',
+    numeric: 'Contact for Price',
+    display: 'Contact for Price'
+  }
+}
