@@ -6,10 +6,6 @@ import { formatPriceDetailed } from '../utils/priceFormatter'
 const PropertyModal = ({ property, isOpen, onClose }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
-  // Touch/Swipe state for image navigation
-  const [touchStart, setTouchStart] = useState(null)
-  const [touchEnd, setTouchEnd] = useState(null)
-
   if (!isOpen || !property) return null
 
   // Format price for display
@@ -52,28 +48,7 @@ const PropertyModal = ({ property, isOpen, onClose }) => {
 
   const availabilityStatus = formatAvailabilityStatus(property.availabilityStatus)
 
-  // Touch/Swipe handlers for image navigation
-  const minSwipeDistance = 50
 
-  const onTouchStart = (e) => {
-    setTouchEnd(null)
-    setTouchStart(e.targetTouches[0].clientX)
-  }
-
-  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX)
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > minSwipeDistance
-    const isRightSwipe = distance < -minSwipeDistance
-
-    if (isLeftSwipe && allImages.length > 1) {
-      nextImage()
-    } else if (isRightSwipe && allImages.length > 1) {
-      prevImage()
-    }
-  }
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50 p-4">
@@ -94,12 +69,7 @@ const PropertyModal = ({ property, isOpen, onClose }) => {
           {/* Image Gallery */}
           {allImages.length > 0 && (
             <div className="mb-6">
-              <div
-                className="relative"
-                onTouchStart={onTouchStart}
-                onTouchMove={onTouchMove}
-                onTouchEnd={onTouchEnd}
-              >
+              <div className="relative">
                 <img
                   src={urlFor(allImages[currentImageIndex]).width(800).height(500).url()}
                   alt={property.title}

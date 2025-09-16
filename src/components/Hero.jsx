@@ -131,7 +131,7 @@ const Hero = () => {
       <div className="container mx-auto pt-28 md:pt-28 lg:pt-36">
         {/* Carousel Container with relative positioning */}
         <div className="relative w-full bg-white rounded-xl shadow-xl border border-gray-100 md:bg-transparent md:rounded-xl md:shadow-lg md:border-0 overflow-hidden">
-          <div className="relative h-[80vh] md:h-[450px] lg:h-[550px] bg-black">
+          <div className="relative h-[76vh] md:h-[450px] lg:h-[550px] bg-black">
             {slides.map((slide, index) => (
               <div
                 key={index}

@@ -17,10 +17,6 @@ const FeaturedProperties = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const carouselRef = useRef(null)
 
-  // Touch/Swipe state
-  const [touchStart, setTouchStart] = useState(null)
-  const [touchEnd, setTouchEnd] = useState(null)
-
   // Number of properties to show per slide (responsive)
   const [propertiesPerSlide, setPropertiesPerSlide] = useState(3)
 
@@ -86,28 +82,7 @@ const FeaturedProperties = () => {
     setIsModalOpen(false)
   }
 
-  // Touch/Swipe handlers
-  const minSwipeDistance = 50
 
-  const onTouchStart = (e) => {
-    setTouchEnd(null) // otherwise the swipe is fired even with usual touch events
-    setTouchStart(e.targetTouches[0].clientX)
-  }
-
-  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX)
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return
-    const distance = touchStart - touchEnd
-    const isLeftSwipe = distance > minSwipeDistance
-    const isRightSwipe = distance < -minSwipeDistance
-
-    if (isLeftSwipe) {
-      nextSlide()
-    } else if (isRightSwipe) {
-      prevSlide()
-    }
-  }
 
   const PropertyCard = ({ property, index }) => {
     const [cardRef, cardVisible] = useScrollReveal()
@@ -238,12 +213,7 @@ const FeaturedProperties = () => {
         {!loading && properties.length > 0 && (
           <div className="relative max-w-7xl mx-auto">
             {/* Carousel Container */}
-            <div
-              className="overflow-hidden"
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-            >
+            <div className="overflow-hidden">
               <div
                 ref={carouselRef}
                 className="flex transition-transform duration-500 ease-in-out"
