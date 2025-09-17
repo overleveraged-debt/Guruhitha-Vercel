@@ -17,7 +17,7 @@ const About = () => {
           >
             <div className="w-3/4 md:w-4/5 lg:w-3/4">
               <img
-                src="/Guruhita/Founder Image.png"
+                src="/Founder Image.png"
                 alt="Muniraj Gowda - Founder, Guruhita Properties"
                 className="rounded-lg shadow-xl transform hover:scale-105 transition-transform duration-500 h-64 md:h-80 lg:h-96 w-full object-contain"
               />
