@@ -19,8 +19,8 @@ function App() {
       <main>
         <Hero />
         <FeaturedProperties />
-        <Services />
         <FinancialServices />
+        <Services />
         <WhyChooseUs />
         <About />
         <Partners />

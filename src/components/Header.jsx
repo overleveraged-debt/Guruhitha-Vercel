@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Instagram, Facebook } from 'lucide-react'
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -77,11 +77,34 @@ const Header = () => {
             </a>
           </nav>
 
-          {/* Contact Us button on the right - Custom gold color */}
-          <div className="hidden md:flex flex-shrink-0 items-center">
+          {/* Social Media Icons - Mobile and Desktop */}
+          <div className="flex items-center gap-3 md:gap-4">
+            {/* Social Media Icons */}
+            <div className="flex items-center gap-2 md:gap-3">
+              <a
+                href="https://www.instagram.com/guruhitha_properties"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-500 hover:text-red-400 transition-all duration-300 p-2 rounded-full hover:bg-white hover:bg-opacity-20"
+                aria-label="Follow us on Instagram"
+              >
+                <Instagram size={20} />
+              </a>
+              <a
+                href="https://www.facebook.com/people/Guruhitha-Properties-and-Fintech/61564461780296/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-red-500 hover:text-red-400 transition-all duration-300 p-2 rounded-full hover:bg-white hover:bg-opacity-20"
+                aria-label="Follow us on Facebook"
+              >
+                <Facebook size={20} />
+              </a>
+            </div>
+
+            {/* Contact Us Button - Desktop Only */}
             <a
               href="#contact"
-              className="px-6 py-3 rounded-full transition-all duration-300 font-semibold shadow-lg text-sm transform hover:scale-105 text-white"
+              className="hidden md:block px-6 py-3 rounded-full transition-all duration-300 font-semibold shadow-lg text-sm transform hover:scale-105 text-white"
               style={{ backgroundColor: '#C89B3F' }}
               onMouseEnter={(e) => e.target.style.backgroundColor = '#B8893A'}
               onMouseLeave={(e) => e.target.style.backgroundColor = '#C89B3F'}

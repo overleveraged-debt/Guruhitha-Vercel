@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { MapPin, Phone, Mail } from 'lucide-react'
+import { MapPin, Phone, Mail, Instagram, Facebook } from 'lucide-react'
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -73,6 +73,31 @@ const Contact = () => {
                 >
                   guruhithaproperties@gmail.com
                 </a>
+              </div>
+
+              {/* Social Media Links */}
+              <div className="mt-6 pt-6 border-t border-gray-600">
+                <h4 className="text-lg font-semibold text-white mb-4">Follow Us</h4>
+                <div className="flex items-center gap-6">
+                  <a
+                    href="https://www.instagram.com/guruhitha_properties"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-red-400 hover:text-red-300 transition-colors duration-200 group"
+                  >
+                    <Instagram size={24} className="group-hover:scale-110 transition-transform" />
+                    <span className="text-sm font-medium">Instagram</span>
+                  </a>
+                  <a
+                    href="https://www.facebook.com/people/Guruhitha-Properties-and-Fintech/61564461780296/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-3 text-red-400 hover:text-red-300 transition-colors duration-200 group"
+                  >
+                    <Facebook size={24} className="group-hover:scale-110 transition-transform" />
+                    <span className="text-sm font-medium">Facebook</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
