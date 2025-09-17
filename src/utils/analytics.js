@@ -1,6 +1,6 @@
 // 🎯 GOOGLE ANALYTICS CONFIGURATION
 // ⚠️  ONLY CHANGE THIS LINE - Replace 'G-XXXXXXXXXX' with your Google Analytics Measurement ID
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'
+const GA_MEASUREMENT_ID = 'G-PX74RRJF3H'
 
 // 📝 How to get your Measurement ID:
 // 1. Go to https://analytics.google.com
