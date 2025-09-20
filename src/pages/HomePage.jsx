@@ -10,7 +10,7 @@ const HomePage = () => {
     <div className="min-h-screen flex flex-col text-brand-text">
       <SEO {...seoConfigs.homepage} />
       <Header />
-      <main className="flex-grow">
+      <main className="flex-grow md:flex-grow-0">
         <ChoiceSection />
       </main>
       <Footer />

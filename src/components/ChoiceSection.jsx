@@ -67,7 +67,7 @@ const ChoiceSection = () => {
   }
 
   return (
-    <section className="pt-28 sm:pt-32 md:pt-40 pb-8 sm:pb-16 md:pb-20 bg-white">
+    <section className="pt-36 sm:pt-32 md:pt-40 pb-12 sm:pb-16 md:pb-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-6 sm:mb-12 md:mb-16">
           <h1
