@@ -15,10 +15,10 @@ import FloatingActionButtons from '../components/FloatingActionButtons'
 
 const PropertiesPage = () => {
   return (
-    <div className="text-brand-text">
+    <div className="min-h-screen flex flex-col text-brand-text">
       <SEO {...seoConfigs.properties} />
       <Header />
-      <main>
+      <main className="flex-grow">
         <PageHero page="properties" />
         <FeaturedProperties />
         <RealEstateServices />
