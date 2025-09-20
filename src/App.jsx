@@ -1,35 +1,16 @@
 import React from 'react'
-import Header from './components/Header'
-import Hero from './components/Hero'
-import FeaturedProperties from './components/FeaturedProperties'
-import About from './components/About'
-import WhyChooseUs from './components/WhyChooseUs'
-import Services from './components/Services'
-import FinancialServices from './components/FinancialServices'
-import Testimonials from './components/Testimonials'
-import Partners from './components/Partners'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import FloatingActionButtons from './components/FloatingActionButtons'
+import { Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import HomeLoansPage from './pages/HomeLoansPage'
+import PropertiesPage from './pages/PropertiesPage'
 
 function App() {
   return (
-    <div className="text-brand-text">
-      <Header />
-      <main>
-        <Hero />
-        <FeaturedProperties />
-        <FinancialServices />
-        <Services />
-        <WhyChooseUs />
-        <About />
-        <Partners />
-        <Testimonials />
-        <Contact />
-      </main>
-      <Footer />
-      <FloatingActionButtons />
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/home-loans" element={<HomeLoansPage />} />
+      <Route path="/properties" element={<PropertiesPage />} />
+    </Routes>
   )
 }
 

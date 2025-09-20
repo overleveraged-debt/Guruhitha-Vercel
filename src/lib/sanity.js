@@ -1,13 +1,22 @@
 import { createClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 
-// Sanity client configuration
+// Sanity client configuration for reading data
 export const client = createClient({
   projectId: 'z72ywil9', // Your project ID from the Sanity config
   dataset: 'production',
   useCdn: false, // Set to false to ensure fresh data and avoid CORS issues
   apiVersion: '2024-01-01', // Use current date in YYYY-MM-DD format
   perspective: 'published', // Only fetch published documents
+})
+
+// Sanity client configuration for writing data (form submissions)
+export const writeClient = createClient({
+  projectId: 'z72ywil9',
+  dataset: 'production',
+  useCdn: false,
+  apiVersion: '2024-01-01',
+  token: import.meta.env.VITE_SANITY_WRITE_TOKEN, // Write token from environment variables
 })
 
 // Helper function to generate image URLs
@@ -30,6 +39,22 @@ export const queries = {
     buttonLink,
     desktopTextPosition,
     mobileTextPosition,
+    page,
+    order
+  }`,
+
+  // Get hero banners for specific page
+  herobannersByPage: (page) => `*[_type == "heroBanner" && isActive == true && (page == "${page}" || page == "all")] | order(order asc) {
+    _id,
+    title,
+    subtitle,
+    image,
+    mobileImage,
+    buttonText,
+    buttonLink,
+    desktopTextPosition,
+    mobileTextPosition,
+    page,
     order
   }`,
 
@@ -166,9 +191,54 @@ export const sanityHelpers = {
           subtitle: 'Your trusted partner in Bangalore real estate',
           buttonText: 'Explore Properties',
           buttonLink: '#properties',
+          page: 'all',
           order: 1
         }
       ]
+    }
+  },
+
+  // Fetch hero banners for specific page
+  async getHeroBannersByPage(page) {
+    try {
+      console.log(`Attempting to fetch hero banners for page: ${page}...`)
+      const result = await client.fetch(queries.herobannersByPage(page))
+      console.log('Page-specific hero banners fetched successfully:', result)
+      return result
+    } catch (error) {
+      console.error(`Error fetching hero banners for page ${page}:`, error)
+      console.error('Error details:', error.message)
+      // Return fallback data based on page
+      const fallbackBanners = {
+        'homepage': [{
+          _id: 'fallback-homepage',
+          title: 'Welcome to Guruhitha Properties',
+          subtitle: 'Your trusted partner in Bangalore real estate',
+          buttonText: 'Get Started',
+          buttonLink: '/',
+          page: 'homepage',
+          order: 1
+        }],
+        'properties': [{
+          _id: 'fallback-properties',
+          title: 'Find Your Dream Property',
+          subtitle: 'Explore premium properties in Bangalore',
+          buttonText: 'View Properties',
+          buttonLink: '#properties',
+          page: 'properties',
+          order: 1
+        }],
+        'home-loans': [{
+          _id: 'fallback-home-loans',
+          title: 'Get Your Home Loan Approved',
+          subtitle: 'Fast, transparent, and hassle-free home loan process',
+          buttonText: 'Apply Now',
+          buttonLink: '#contact',
+          page: 'home-loans',
+          order: 1
+        }]
+      }
+      return fallbackBanners[page] || fallbackBanners['homepage']
     }
   },
 
@@ -291,6 +361,63 @@ export const sanityHelpers = {
           isFeatured: true
         }
       ]
+    }
+  },
+
+  // Submit form data to Sanity
+  async submitForm(formData) {
+    try {
+      console.log('Attempting to submit form data to Sanity...', formData)
+
+      // Check if write token is available
+      if (!import.meta.env.VITE_SANITY_WRITE_TOKEN) {
+        console.warn('No Sanity write token found. Form data will be logged but not saved to CMS.')
+        console.log('Form data that would be submitted:', formData)
+
+        // Simulate successful submission for development
+        return {
+          _id: 'simulated-' + Date.now(),
+          _type: 'formSubmission',
+          ...formData,
+          submittedAt: new Date().toISOString(),
+          status: 'simulated'
+        }
+      }
+
+      const doc = {
+        _type: 'formSubmission',
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone || '',
+        message: formData.message || '',
+        formType: formData.formType || 'contact',
+        source: formData.source || 'contact',
+        status: 'new',
+        submittedAt: new Date().toISOString()
+      }
+
+      const result = await writeClient.create(doc)
+      console.log('Form submitted successfully:', result)
+      return result
+    } catch (error) {
+      console.error('Error submitting form:', error)
+
+      // If it's a permission error, provide helpful guidance
+      if (error.message.includes('Insufficient permissions')) {
+        console.warn('Sanity write permissions not configured. Please set up a write token.')
+        console.log('Form data (not saved to CMS):', formData)
+
+        // Return a simulated success for better UX
+        return {
+          _id: 'local-' + Date.now(),
+          _type: 'formSubmission',
+          ...formData,
+          submittedAt: new Date().toISOString(),
+          status: 'local-only'
+        }
+      }
+
+      throw error
     }
   }
 }

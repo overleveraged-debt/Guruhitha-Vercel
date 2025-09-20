@@ -1,13 +1,16 @@
 import React, { useState } from 'react'
 import { MapPin, Phone, Mail, Instagram, Facebook } from 'lucide-react'
+import { sanityHelpers } from '../lib/sanity'
 
-const Contact = () => {
+const Contact = ({ source = 'contact' }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     message: ''
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState(null)
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
@@ -17,17 +20,32 @@ const Contact = () => {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted:', formData)
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      message: ''
-    })
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    try {
+      await sanityHelpers.submitForm({
+        ...formData,
+        source: source,
+        formType: 'contact'
+      })
+
+      setSubmitStatus('success')
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+      })
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -158,12 +176,29 @@ const Contact = () => {
                   className="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-gold focus:border-brand-gold"
                 ></textarea>
               </div>
+              {/* Status Messages */}
+              {submitStatus === 'success' && (
+                <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                  Thank you! Your message has been sent successfully. We'll get back to you soon.
+                </div>
+              )}
+              {submitStatus === 'error' && (
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                  Sorry, there was an error sending your message. Please try again or contact us directly.
+                </div>
+              )}
+
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-brand-gold text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  disabled={isSubmitting}
+                  className={`w-full px-6 py-3 rounded-lg font-semibold transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1 ${
+                    isSubmitting
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-brand-gold text-white hover:bg-opacity-90'
+                  }`}
                 >
-                  Send Message
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
               </div>
             </form>

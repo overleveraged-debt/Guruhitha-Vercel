@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Instagram, Facebook } from 'lucide-react'
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
+  const location = useLocation()
 
   // Use Vite's base URL to handle different deployment environments
   const baseUrl = import.meta.env.BASE_URL || '/'
@@ -51,30 +53,31 @@ const Header = () => {
 
           {/* Navigation in center with solid red background */}
           <nav className="hidden md:flex items-center bg-red-800 rounded-full px-6 py-3 shadow-lg mx-8">
-            <a
-              href="#properties"
-              className="text-white hover:text-yellow-300 transition-all duration-300 px-6 py-2 font-medium text-sm rounded-full hover:bg-red-700"
+            <Link
+              to="/"
+              className={`text-white hover:text-yellow-300 transition-all duration-300 px-6 py-2 font-medium text-sm rounded-full hover:bg-red-700 ${
+                location.pathname === '/' ? 'bg-red-700 text-yellow-300' : ''
+              }`}
+            >
+              Home
+            </Link>
+            <Link
+              to="/properties"
+              className={`text-white hover:text-yellow-300 transition-all duration-300 px-6 py-2 font-medium text-sm rounded-full hover:bg-red-700 ${
+                location.pathname === '/properties' ? 'bg-red-700 text-yellow-300' : ''
+              }`}
             >
               Properties
-            </a>
-            <a
-              href="#financial-services"
-              className="text-white hover:text-yellow-300 transition-all duration-300 px-6 py-2 font-medium text-sm rounded-full hover:bg-red-700"
+            </Link>
+            <Link
+              to="/home-loans"
+              className={`text-white hover:text-yellow-300 transition-all duration-300 px-6 py-2 font-medium text-sm rounded-full hover:bg-red-700 ${
+                location.pathname === '/home-loans' ? 'bg-red-700 text-yellow-300' : ''
+              }`}
             >
               Home Loans
-            </a>
-            <a
-              href="#about"
-              className="text-white hover:text-yellow-300 transition-all duration-300 px-6 py-2 font-medium text-sm rounded-full hover:bg-red-700"
-            >
-              About Us
-            </a>
-            <a
-              href="#services"
-              className="text-white hover:text-yellow-300 transition-all duration-300 px-6 py-2 font-medium text-sm rounded-full hover:bg-red-700"
-            >
-              Services
-            </a>
+            </Link>
+
           </nav>
 
           {/* Social Media Icons - Mobile and Desktop */}
@@ -126,14 +129,38 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div className="md:hidden bg-white/95 backdrop-blur-md shadow-xl">
           <div className="px-6 py-6 space-y-4">
-            <a href="#properties" className="block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100">Properties</a>
-            <a href="#financial-services" className="block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100">Home Loans</a>
-            <a href="#about" className="block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100">About Us</a>
-            <a href="#services" className="block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100">Services</a>
+            <Link
+              to="/"
+              className={`block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100 ${
+                location.pathname === '/' ? 'text-red-600 font-bold' : ''
+              }`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              to="/properties"
+              className={`block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100 ${
+                location.pathname === '/properties' ? 'text-red-600 font-bold' : ''
+              }`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Properties
+            </Link>
+            <Link
+              to="/home-loans"
+              className={`block py-3 text-gray-800 hover:text-red-600 transition-colors font-medium border-b border-gray-100 ${
+                location.pathname === '/home-loans' ? 'text-red-600 font-bold' : ''
+              }`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Home Loans
+            </Link>
             <a
               href="#contact"
               className="block mt-4 px-6 py-3 rounded-full transition-all text-center font-semibold shadow-lg text-white"
               style={{ backgroundColor: '#C89B3F' }}
+              onClick={() => setIsMobileMenuOpen(false)}
             >
               Contact Us
             </a>

@@ -52,6 +52,23 @@ export default {
       initialValue: '#properties'
     },
     {
+      name: 'page',
+      title: 'Page',
+      type: 'string',
+      description: 'Select which page this banner should appear on',
+      options: {
+        list: [
+          {title: 'Homepage', value: 'homepage'},
+          {title: 'Properties Page', value: 'properties'},
+          {title: 'Home Loans Page', value: 'home-loans'},
+          {title: 'All Pages', value: 'all'}
+        ],
+        layout: 'dropdown'
+      },
+      initialValue: 'all',
+      validation: Rule => Rule.required()
+    },
+    {
       name: 'desktopTextPosition',
       title: 'Desktop Text Position',
       type: 'string',
